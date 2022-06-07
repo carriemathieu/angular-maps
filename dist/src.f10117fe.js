@@ -137,24 +137,44 @@ function () {
       }
     });
   } // ***** BAD APPROACH ***** //
+  // addUserMarker(user: User): void {
+  //     new google.maps.Marker({
+  //         map: this.googleMap,
+  //         position: {
+  //             lat: user.location.lat,
+  //             lng: user.location.lng
+  //         }
+  //     });
+  // }
+  // addCompanyMarker(company: Company): void {
+  //     new google.maps.Marker({
+  //         map: this.googleMap,
+  //         position: {
+  //             lat: company.location.lat,
+  //             lng: company.location.lng
+  //         }
+  //     });
+  // }
+  // addMarker(mappable: User | Company): void {
+  //     new google.maps.Marker({
+  //         map: this.googleMap,
+  //         position: {
+  //             lat: mappable.location.lat,
+  //             lng: mappable.location.lng
+  //         }
+  //     });
+  // }
+  // ***** BETTER APPROACH ***** //
+  // adding interface as type makes function more scalable
+  // user can be type User AND Mappable if fulfills interface requirements
 
 
-  CustomMap.prototype.addUserMarker = function (user) {
+  CustomMap.prototype.addMarker = function (mappable) {
     new google.maps.Marker({
       map: this.googleMap,
       position: {
-        lat: user.location.lat,
-        lng: user.location.lng
-      }
-    });
-  };
-
-  CustomMap.prototype.addCompanyMarker = function (company) {
-    new google.maps.Marker({
-      map: this.googleMap,
-      position: {
-        lat: company.location.lat,
-        lng: company.location.lng
+        lat: mappable.location.lat,
+        lng: mappable.location.lng
       }
     });
   };
@@ -136995,8 +137015,8 @@ var company = new Company_1.Company(); // console.log(user);
 // console.log(company);
 
 var customMap = new CustomMap_1.CustomMap('map');
-customMap.addUserMarker(user);
-customMap.addCompanyMarker(company);
+customMap.addMarker(user);
+customMap.addMarker(company);
 },{"./CustomMap":"src/CustomMap.ts","./User":"src/User.ts","./Company":"src/Company.ts"}],"../../../../.nvm/versions/node/v16.13.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
