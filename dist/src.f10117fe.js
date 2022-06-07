@@ -170,12 +170,20 @@ function () {
 
 
   CustomMap.prototype.addMarker = function (mappable) {
-    new google.maps.Marker({
+    var _this = this;
+
+    var marker = new google.maps.Marker({
       map: this.googleMap,
       position: {
         lat: mappable.location.lat,
         lng: mappable.location.lng
       }
+    });
+    marker.addListener('click', function () {
+      var infoWindow = new google.maps.InfoWindow({
+        content: mappable.markerContent()
+      });
+      infoWindow.open(_this.googleMap, marker);
     });
   };
 
@@ -136948,7 +136956,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.User = void 0;
 
-var faker_1 = __importDefault(require("faker"));
+var faker_1 = __importDefault(require("faker")); // make sure that a user you create, satisfies "Mappable" interface
+
 
 var User =
 /** @class */
@@ -136960,6 +136969,10 @@ function () {
       lng: parseFloat(faker_1.default.address.longitude())
     };
   }
+
+  User.prototype.markerContent = function () {
+    return "User Name: ".concat(this.name);
+  };
 
   return User;
 }();
@@ -136979,7 +136992,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Company = void 0;
 
-var faker_1 = __importDefault(require("faker"));
+var faker_1 = __importDefault(require("faker")); // make sure every company created satisfies Mappable interface
+
 
 var Company =
 /** @class */
@@ -136992,6 +137006,10 @@ function () {
       lng: parseFloat(faker_1.default.address.longitude())
     };
   }
+
+  Company.prototype.markerContent = function () {
+    return "\n            <div>\n                <h1>Company Name: ".concat(this.companyName, "</h1>\n                <h3>Catchphrase: ").concat(this.catchPhrase, "</h3>\n            </div>\n        ");
+  };
 
   return Company;
 }();

@@ -1,9 +1,10 @@
 // instructions to every other class on how they can be an argument to 'addMarker'
-interface Mappable {
+export interface Mappable {
     location: {
         lat: number;
         lng: number;
     };
+    markerContent(): string;
 }
 
 // creating a custom class to "hide existence of google maps from other engineers", prevent other engineers from using methods on google map instance that could 'break' app
@@ -54,12 +55,20 @@ export class CustomMap {
     // adding interface as type makes function more scalable
     // user can be type User AND Mappable if fulfills interface requirements
     addMarker(mappable: Mappable): void {
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
             map: this.googleMap,
             position: {
                 lat: mappable.location.lat,
                 lng: mappable.location.lng
             }
+        });
+
+        marker.addListener('click', () => {
+            const infoWindow = new google.maps.InfoWindow({
+                content: mappable.markerContent()
+            })
+
+            infoWindow.open(this.googleMap, marker);
         });
     }
 }
